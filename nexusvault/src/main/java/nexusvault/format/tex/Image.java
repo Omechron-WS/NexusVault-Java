@@ -81,6 +81,10 @@ public final class Image {
 		return this.width;
 	}
 
+	public int getDepth() {
+		return this.depth;
+	}
+
 	public byte[] getData() {
 		return this.data;
 	}
@@ -97,26 +101,32 @@ public final class Image {
                 throw new IllegalArgumentException("Input image is not the same height as this image.");
             }
             
+            int bytes = dest.format.bytePerPixel;
+            
             for(int y = 0; y < dest.height; ++y) {
                 for(int x = 0; x < dest.width; ++x) {
-                    dest.data[x + dest.width * (y + (dest.height * targetLayer))] = source.data[x + source.width * (y + (source.height * sourceLayer))];
+                    for(int b = 0; b < bytes; ++b) {
+                        dest.data[b + bytes * (x + dest.width * (y + (dest.height * targetLayer)))] = source.data[b + bytes * (x + source.width * (y + (source.height * sourceLayer)))];
+                    }
                 }
             }
         }
         
-        public static void make3DImage(List<Image> source) {
+        public static Image make3DImage(List<Image> source) {
             Image first = source.get(0);
             Image img = new Image(first.width, first.height, source.size(), first.format, new byte[first.data.length * source.size()]);
             for(int z = 0; z < source.size(); ++z) {
-                blitLayerToImage(source.get(z), 1, img, z);
+                blitLayerToImage(source.get(z), 0, img, z);
             }
+            return img;
         }
         
         public ArrayList<Image> split3DImage() {
             ArrayList<Image> images = new ArrayList<>();
             for(int z = 0; z < depth; ++z) {
                 Image img = new Image(width, height, 1, format, new byte[data.length / depth]);
-                blitLayerToImage(this, z, img, 1);
+                blitLayerToImage(this, z, img, 0);
+                images.add(img);
             }
             return images;
         }
