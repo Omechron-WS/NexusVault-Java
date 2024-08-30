@@ -58,7 +58,7 @@ public final class PlainImageReader {
 			width = width <= 0 ? 1 : width;
 			height = height <= 0 ? 1 : height;
 			arrayOffset += length;
-			length = width * height * bytesPerPixel;
+			length = width * height * header.depth * bytesPerPixel;
 		}
 
 		final var buffer = new byte[length];
@@ -68,11 +68,11 @@ public final class PlainImageReader {
 			case ARGB1:
 			case ARGB2:
 				ColorModelConverter.inplaceConvertBGRAToARGB(buffer);
-				return new Image(width, height, ImageFormat.ARGB, buffer);
+				return new Image(width, height, header.depth, ImageFormat.ARGB, buffer);
 			case RGB:
-				return new Image(width, height, ImageFormat.RGB, ColorModelConverter.unpackBGR565ToRGB(buffer));
+				return new Image(width, height, header.depth, ImageFormat.RGB, ColorModelConverter.unpackBGR565ToRGB(buffer));
 			case GRAYSCALE:
-				return new Image(width, height, ImageFormat.GRAYSCALE, buffer);
+				return new Image(width, height, header.depth, ImageFormat.GRAYSCALE, buffer);
 			default:
 				throw new TextureException();
 		}

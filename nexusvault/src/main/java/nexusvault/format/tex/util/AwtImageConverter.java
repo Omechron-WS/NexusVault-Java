@@ -128,7 +128,7 @@ public final class AwtImageConverter {
 		if (imageData == null) {
 			throw new TextureException(String.format("BufferedImage type '%s' to texture format '%s' not supported", bufferedImage.getType(), format));
 		}
-		return new Image(bufferedImage.getWidth(), bufferedImage.getHeight(), format, imageData);
+		return new Image(bufferedImage.getWidth(), bufferedImage.getHeight(), 1, format, imageData);
 	}
 
 	private static BufferedImage convert(BufferedImage image, int newType) {

@@ -62,7 +62,7 @@ public final class JPGImageReader {
 
 	private static Image decompress(JPGType jpgType, int[] defaultColors, float[][] quantTables, byte[] jpg, int width, int height) {
 		final var decodedImage = decompressToARGB(jpgType, defaultColors, quantTables, jpg, width, height);
-		return new Image(width, height, ImageFormat.ARGB, decodedImage);
+		return new Image(width, height, 1, ImageFormat.ARGB, decodedImage);
 	}
 
 	public static byte[] decompressToARGB(JPGType type, int[] defaultColors, float[][] quantTables, byte[] jpg, int width, int height) {

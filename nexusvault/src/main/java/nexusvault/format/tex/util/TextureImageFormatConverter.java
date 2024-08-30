@@ -23,7 +23,7 @@ public final class TextureImageFormatConverter {
 			return source;
 		}
 		final var data = convertColorModel(source, target);
-		return new Image(source.getWidth(), source.getHeight(), target, data);
+		return new Image(source.getWidth(), source.getHeight(), 1, target, data);
 	}
 
 	@SuppressWarnings("incomplete-switch")

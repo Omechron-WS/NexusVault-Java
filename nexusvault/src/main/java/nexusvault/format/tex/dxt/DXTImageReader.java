@@ -56,7 +56,7 @@ public final class DXTImageReader {
 	public static Image decompressSingleImage(TextureType type, byte[] dxtData, int width, int height) {
 		final var decompressedImage = decompressToRGBA(type, dxtData, width, height);
 		ColorModelConverter.inplaceConvertRGBAToARGB(decompressedImage);
-		return new Image(width, height, ImageFormat.ARGB, decompressedImage);
+		return new Image(width, height, 1, ImageFormat.ARGB, decompressedImage);
 	}
 
 	public static byte[] decompressToRGBA(TextureType dxtType, byte[] dxt, int width, int height) {

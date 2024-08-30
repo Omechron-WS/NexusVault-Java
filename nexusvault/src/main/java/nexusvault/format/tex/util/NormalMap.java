@@ -67,7 +67,7 @@ public final class NormalMap {
 			normalMap[dstIndex++] = normalZ;
 		}
 
-		return new Image(src.getWidth(), src.getHeight(), ImageFormat.RGB, normalMap);
+		return new Image(src.getWidth(), src.getHeight(), 1, ImageFormat.RGB, normalMap);
 	}
 
 }

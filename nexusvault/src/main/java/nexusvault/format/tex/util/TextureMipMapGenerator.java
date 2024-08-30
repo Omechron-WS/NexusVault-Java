@@ -69,8 +69,8 @@ public final class TextureMipMapGenerator {
 				diffuseData[d + 2] = srcData[s + 3];
 			}
 
-			tmpDiffuse[0] = AwtImageConverter.convertToBufferedImage(new Image(src.getWidth(), src.getHeight(), ImageFormat.RGB, diffuseData));
-			tmpAlpha[0] = AwtImageConverter.convertToBufferedImage(new Image(src.getWidth(), src.getHeight(), ImageFormat.GRAYSCALE, alphaData));
+			tmpDiffuse[0] = AwtImageConverter.convertToBufferedImage(new Image(src.getWidth(), src.getHeight(), 1, ImageFormat.RGB, diffuseData));
+			tmpAlpha[0] = AwtImageConverter.convertToBufferedImage(new Image(src.getWidth(), src.getHeight(), 1, ImageFormat.GRAYSCALE, alphaData));
 		}
 
 		for (int i = 1; i < numberOfMipMaps; ++i) {
@@ -96,7 +96,7 @@ public final class TextureMipMapGenerator {
 				imageData[s + 3] = diffuseData[d + 2];
 			}
 
-			images[i] = new Image(diffuseImage.getWidth(), diffuseImage.getHeight(), ImageFormat.ARGB, imageData);
+			images[i] = new Image(diffuseImage.getWidth(), diffuseImage.getHeight(), 1, ImageFormat.ARGB, imageData);
 		}
 
 		return images;
