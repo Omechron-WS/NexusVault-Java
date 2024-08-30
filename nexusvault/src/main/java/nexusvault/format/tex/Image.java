@@ -94,6 +94,7 @@ public final class Image {
 	}
         
         public static void blitLayerToImage(Image source, int sourceLayer, Image dest, int targetLayer) {
+            // Mostly kept in case I want to try this again. Doesn't seem as useful as the sideways version, though.
             if(source.width != dest.width) {
                 throw new IllegalArgumentException("Input image is not the same width as this image.");
             }
@@ -107,6 +108,32 @@ public final class Image {
                 for(int x = 0; x < dest.width; ++x) {
                     for(int b = 0; b < bytes; ++b) {
                         dest.data[b + bytes * (x + dest.width * (y + (dest.height * targetLayer)))] = source.data[b + bytes * (x + source.width * (y + (source.height * sourceLayer)))];
+                    }
+                }
+            }
+        }
+        
+        public static void blitLayerToImageSideways(Image tall, Image wide, boolean toWideImage) {
+            if(tall.width * tall.depth != wide.width) {
+                throw new IllegalArgumentException("Input image is not right width.");
+            }
+            if(tall.height != wide.height) {
+                throw new IllegalArgumentException("Input image is not the same height as this image.");
+            }
+            
+            int bytes = tall.format.bytePerPixel;
+            
+            for(int y = 0; y < tall.height; ++y) {
+                for(int x = 0; x < tall.width; ++x) {
+                    for(int z = 0; z < tall.depth; ++z) {
+                        for(int b = 0; b < bytes; ++b) {
+                            if(toWideImage) {
+                                wide.data[b + bytes * ((x + z * tall.width) + wide.width * y)] = tall.data[b + bytes * (x + tall.width * (y + (tall.height * z)))];
+                            }
+                            else {
+                                tall.data[b + bytes * (x + tall.width * (y + (tall.height * z)))] = wide.data[b + bytes * ((x + z * tall.width) + wide.width * y)];
+                            }
+                        }
                     }
                 }
             }
@@ -129,6 +156,18 @@ public final class Image {
                 images.add(img);
             }
             return images;
+        }
+        
+        public Image split3DImageSideways() {
+            Image img = new Image(width * depth, height, 1, format, new byte[data.length]);
+            blitLayerToImageSideways(this, img, true);
+            return img;
+        }
+        
+        public Image make3DImageFromSideways(int slices) {
+            Image img = new Image(width / slices, height, slices, format, new byte[data.length]);
+            blitLayerToImageSideways(img, this, false);
+            return img;
         }
 
 }
