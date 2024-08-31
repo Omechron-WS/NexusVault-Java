@@ -47,7 +47,7 @@ public final class TextureWriter {
 		header.width = mipmaps[mipmaps.length - 1].getWidth();
 		header.height = mipmaps[mipmaps.length - 1].getHeight();
 		header.version = 3;
-		header.depth = 1;
+		header.depth = mipmaps[mipmaps.length - 1].getDepth();
 		header.sides = 1;
 		header.textureCount = mipmaps.length;
 		header.format = target.getFormat();
